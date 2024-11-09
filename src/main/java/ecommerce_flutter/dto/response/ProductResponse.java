@@ -1,19 +1,17 @@
-package ecommerce_flutter.model;
+package ecommerce_flutter.dto.response;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-public class Product {
+public class ProductResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String title;
@@ -24,4 +22,5 @@ public class Product {
     double price;
     String category;
     double rate;
+
 }

@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -23,11 +24,11 @@ public class CloudinaryService {
                 "api_secret", apiSecret));
     }
 
-    public String uploadImage(String base64Image) throws IOException {
-        // Giải mã chuỗi Base64
-        byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
-        // Tải ảnh lên Cloudinary và nhận lại URL
-        Map uploadResult = cloudinary.uploader().upload(decodedBytes, ObjectUtils.emptyMap());
-        return (String) uploadResult.get("secure_url");
+
+    // Upload image from MultipartFile
+    public String uploadImage(MultipartFile file) throws IOException {
+        // Tải ảnh lên Cloudinary
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        return (String) uploadResult.get("secure_url");  // Trả về URL của ảnh đã tải lên
     }
 }

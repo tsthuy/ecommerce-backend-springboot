@@ -1,21 +1,16 @@
-package ecommerce_flutter.model;
+package ecommerce_flutter.dto.request;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+import java.io.File;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class ProductCreationRequest {
     String title;
     String description;
     String imageUrl;
