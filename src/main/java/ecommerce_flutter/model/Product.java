@@ -16,11 +16,13 @@ import lombok.experimental.FieldDefaults;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+
     String title;
     String description;
     String imageUrl;
     String review;
-    String Seller;
+    String seller;
     double price;
     String category;
     double rate;

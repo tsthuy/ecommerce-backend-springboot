@@ -3,11 +3,13 @@ package ecommerce_flutter.service;
 import ecommerce_flutter.dto.request.UserRequestDto;
 import ecommerce_flutter.dto.request.UserUpdateRequest;
 import ecommerce_flutter.dto.response.ApiResponse;
+import ecommerce_flutter.dto.response.ProductResponse;
 import ecommerce_flutter.dto.response.UserResponse;
 import ecommerce_flutter.exception.AppException;
 import ecommerce_flutter.exception.ErrorCode;
 import ecommerce_flutter.mapper.UserMapper;
 import ecommerce_flutter.model.User;
+import ecommerce_flutter.repository.ProductRepository;
 import ecommerce_flutter.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,9 @@ public class UserService {
     UserMapper userMapper;
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
-   public UserResponse createUser(UserRequestDto userRequestDto){
+    private final ProductRepository productRepository;
+
+    public UserResponse createUser(UserRequestDto userRequestDto){
         User user = userMapper.toUser(userRequestDto);
         user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         try {
@@ -50,4 +54,5 @@ public class UserService {
    public void deleteUser(String userId){
        userRepository.deleteById(userId);
    }
+
 }

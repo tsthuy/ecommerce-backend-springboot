@@ -12,13 +12,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     String title;
     String description;
     String imageUrl;
     String review;
-    String Seller;
+    String seller;
     double price;
     String category;
     double rate;

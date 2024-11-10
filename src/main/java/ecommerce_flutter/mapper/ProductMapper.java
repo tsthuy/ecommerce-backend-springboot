@@ -10,6 +10,19 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     Product toProduct(ProductCreationRequest request);
-    ProductResponse toProductResponse(Product product);
+//    ProductResponse toProductResponse(Product product);
+default ProductResponse toProductResponse(Product product) {
+    ProductResponse response = new ProductResponse();
+    response.setTitle(product.getTitle());
+    response.setDescription(product.getDescription());
+    response.setImageUrl(product.getImageUrl());
+    response.setReview(product.getReview());
+    response.setSeller(product.getSeller());  // Đảm bảo seller được set
+    response.setPrice(product.getPrice());
+    response.setCategory(product.getCategory());
+    response.setRate(product.getRate());
+    System.out.println("Seller in response: " + response.getSeller());  // Log giá trị seller
+    return response;
+}
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);
 }

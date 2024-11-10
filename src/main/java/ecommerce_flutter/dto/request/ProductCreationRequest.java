@@ -15,7 +15,7 @@ public class ProductCreationRequest {
     String description;
     String imageUrl;
     String review;
-    String Seller;
+    String seller;
     double price;
     String category;
     double rate;

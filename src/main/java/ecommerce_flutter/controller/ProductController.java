@@ -1,5 +1,6 @@
 package ecommerce_flutter.controller;
 
+import com.cloudinary.Api;
 import ecommerce_flutter.cloudinary.CloudinaryService;
 import ecommerce_flutter.dto.request.ProductCreationRequest;
 import ecommerce_flutter.dto.response.ApiResponse;
@@ -9,11 +10,11 @@ import ecommerce_flutter.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -29,7 +30,7 @@ public class ProductController {
             @RequestParam("file") MultipartFile file,  // nhận ảnh
             @RequestParam("title") String title,
             @RequestParam("description") String description,
-            @RequestParam("review") String review,
+//            @RequestParam("review") String review,
             @RequestParam("seller") String seller,
             @RequestParam("price") double price,
             @RequestParam("category") String category,
@@ -37,13 +38,17 @@ public class ProductController {
         ProductCreationRequest request = ProductCreationRequest.builder()
                 .title(title)
                 .description(description)
-                .review(review)
-                .Seller(seller)
+//                .review(review)
+                .seller(seller)
                 .price(price)
                 .category(category)
                 .rate(rate)
                 .build();
         return ApiResponse.<ProductResponse>builder().result(productService.createProduct(request, file)).build();
     }
-
+    @GetMapping
+    public ApiResponse<List<ProductResponse>> getProducts(){
+        return ApiResponse.<List<ProductResponse>>builder().result(productService.getProducts()).
+                build();
+    }
 }
