@@ -1,5 +1,6 @@
 package ecommerce_flutter.controller;
 
+import com.cloudinary.Api;
 import ecommerce_flutter.dto.response.ApiResponse;
 import ecommerce_flutter.dto.response.ResOrderDTO;
 import ecommerce_flutter.dto.response.UserResponse;
@@ -35,6 +36,12 @@ public class OrderController {
     @GetMapping
     public ApiResponse<List<ResOrderDTO>> getOrders(){
         return ApiResponse.<List<ResOrderDTO>>builder().result(orderService.getAllOrderByAdmin())
+                .build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<Order> update(@Valid @RequestBody Order order, @PathVariable String id){
+        return ApiResponse.<Order>builder().result(orderService.updateOrder(order, id))
                 .build();
     }
 

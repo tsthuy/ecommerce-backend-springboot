@@ -24,14 +24,13 @@ public class ProductController {
     CloudinaryService cloudinaryService;
     ProductService productService;
 
-
     @PostMapping
     public ApiResponse<ProductResponse> createProduct(
             @RequestParam("file") MultipartFile file,  // nhận ảnh
             @RequestParam("title") String title,
             @RequestParam("description") String description,
 //            @RequestParam("review") String review,
-            @RequestParam("seller") String seller,
+//            @RequestParam("seller") String seller,
             @RequestParam("price") double price,
             @RequestParam("category") String category,
             @RequestParam("rate") double rate) throws IOException {
@@ -39,16 +38,47 @@ public class ProductController {
                 .title(title)
                 .description(description)
 //                .review(review)
-                .seller(seller)
+//                .seller(seller)
                 .price(price)
                 .category(category)
                 .rate(rate)
                 .build();
         return ApiResponse.<ProductResponse>builder().result(productService.createProduct(request, file)).build();
     }
+
     @GetMapping
     public ApiResponse<List<ProductResponse>> getProducts(){
         return ApiResponse.<List<ProductResponse>>builder().result(productService.getProducts()).
                 build();
     }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deleteProduct(@PathVariable("id") String id){
+        return ApiResponse.<Void>builder().result(productService.deleteProduct(id)).build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<ProductResponse> updateProduct(
+            @PathVariable("id") String id,
+            @RequestParam(value = "file", required = false) MultipartFile file, // Ảnh là tùy chọn
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("category") String category,
+            @RequestParam("rate") double rate) throws IOException {
+
+        ProductCreationRequest request = ProductCreationRequest.builder()
+                .title(title)
+                .description(description)
+                .price(price)
+                .category(category)
+                .rate(rate)
+                .build();
+
+        // Gọi service để cập nhật thông tin sản phẩm và ảnh
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.updateProduct(id, request, file))
+                .build();
+    }
+
 }

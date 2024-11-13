@@ -49,4 +49,11 @@ public class OrderService {
                 .map(orderMapper::mapToResOrderDTO)
                 .collect(Collectors.toList());
     }
+
+    public Order updateOrder(Order orderUpdate, String id) {
+        Order orderDb = getOrderById(id);
+
+        orderDb.setStatus(orderUpdate.getStatus());
+        return orderRepository.save(orderDb);
+    }
 }
