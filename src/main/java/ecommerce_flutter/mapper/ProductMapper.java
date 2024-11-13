@@ -21,7 +21,6 @@ default ProductResponse toProductResponse(Product product) {
     response.setPrice(product.getPrice());
     response.setCategory(product.getCategory());
     response.setRate(product.getRate());
-    System.out.println("Seller in response: " + response.getSeller());  // Log giá trị seller
     return response;
 }
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);

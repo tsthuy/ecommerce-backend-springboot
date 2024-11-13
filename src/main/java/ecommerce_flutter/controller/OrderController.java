@@ -39,10 +39,19 @@ public class OrderController {
                 .build();
     }
 
+    @GetMapping("/user/{id}")
+    public ApiResponse<List<ResOrderDTO>> getOrdersByUser(@PathVariable String id){
+        return ApiResponse.<List<ResOrderDTO>>builder().result(orderService.getAllOrderByUser(id))
+                .build();
+    }
+
+
     @PutMapping("/{id}")
     public ApiResponse<Order> update(@Valid @RequestBody Order order, @PathVariable String id){
         return ApiResponse.<Order>builder().result(orderService.updateOrder(order, id))
                 .build();
     }
+
+
 
 }

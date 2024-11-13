@@ -30,7 +30,6 @@ public class ProductController {
             @RequestParam("title") String title,
             @RequestParam("description") String description,
 //            @RequestParam("review") String review,
-//            @RequestParam("seller") String seller,
             @RequestParam("price") double price,
             @RequestParam("category") String category,
             @RequestParam("rate") double rate) throws IOException {
@@ -38,7 +37,6 @@ public class ProductController {
                 .title(title)
                 .description(description)
 //                .review(review)
-//                .seller(seller)
                 .price(price)
                 .category(category)
                 .rate(rate)
@@ -81,4 +79,8 @@ public class ProductController {
                 .build();
     }
 
+    @GetMapping("/{id}")
+    public ApiResponse<ProductResponse> getProductById(@PathVariable("id") String id){
+        return ApiResponse.<ProductResponse>builder().result(productService.getProductById(id)).build();
+    }
 }

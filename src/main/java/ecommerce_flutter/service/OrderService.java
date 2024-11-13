@@ -56,4 +56,12 @@ public class OrderService {
         orderDb.setStatus(orderUpdate.getStatus());
         return orderRepository.save(orderDb);
     }
+
+    public List<ResOrderDTO> getAllOrderByUser(String id) {
+        List<Order> orders = orderRepository.findAllByUserId(id);
+
+        return orders.stream()
+                .map(orderMapper::mapToResOrderDTO)
+                .collect(Collectors.toList());
+    }
 }
