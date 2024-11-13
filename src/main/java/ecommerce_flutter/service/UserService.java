@@ -34,6 +34,9 @@ public class UserService {
     public UserResponse createUser(UserRequestDto userRequestDto){
         User user = userMapper.toUser(userRequestDto);
         user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("user");
+        }
         try {
             user = userRepository.save(user);
         } catch(DataIntegrityViolationException ex) {

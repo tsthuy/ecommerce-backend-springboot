@@ -13,6 +13,7 @@ public interface ProductMapper {
 //    ProductResponse toProductResponse(Product product);
 default ProductResponse toProductResponse(Product product) {
     ProductResponse response = new ProductResponse();
+    response.setId(product.getId());
     response.setTitle(product.getTitle());
     response.setDescription(product.getDescription());
     response.setImageUrl(product.getImageUrl());

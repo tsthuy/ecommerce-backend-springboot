@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class UserResponse {
     String id;
     String username;
+    String role;
     @JsonIgnore
     String password;
 }

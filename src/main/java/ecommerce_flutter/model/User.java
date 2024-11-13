@@ -15,4 +15,6 @@ public class User {
     @Column(name = "username", unique = true)
     private String username;
     private String password;
+    @Column(name = "role", columnDefinition = "varchar(255) default 'user'")
+    private String role;
 }
