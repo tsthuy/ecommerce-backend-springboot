@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Builder(toBuilder = true)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,7 +23,6 @@ public class Product {
     String description;
     String imageUrl;
     String review;
-    String seller;
     double price;
     String category;
     double rate;

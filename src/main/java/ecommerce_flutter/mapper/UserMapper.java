@@ -17,5 +17,6 @@ public interface UserMapper {
         userResponse.setRole(user.getRole());
         return userResponse;
     };
+
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

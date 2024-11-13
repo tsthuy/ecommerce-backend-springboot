@@ -18,7 +18,6 @@ default ProductResponse toProductResponse(Product product) {
     response.setDescription(product.getDescription());
     response.setImageUrl(product.getImageUrl());
     response.setReview(product.getReview());
-    response.setSeller(product.getSeller());  // Đảm bảo seller được set
     response.setPrice(product.getPrice());
     response.setCategory(product.getCategory());
     response.setRate(product.getRate());

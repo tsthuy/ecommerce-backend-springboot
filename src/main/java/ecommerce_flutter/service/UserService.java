@@ -47,6 +47,7 @@ public class UserService {
    public List<UserResponse> getUsers(){
        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
    }
+
    public UserResponse updateUser(String userId, UserUpdateRequest request){
        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
        userMapper.updateUser(user, request);
@@ -54,8 +55,17 @@ public class UserService {
        return userMapper.toUserResponse(userRepository.save(user));
    }
 
+   public UserResponse getUserById(String userId){
+       User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+       return userMapper.toUserResponse(user);
+   }
+
    public void deleteUser(String userId){
        userRepository.deleteById(userId);
    }
 
+    public UserResponse getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        return userMapper.toUserResponse(user);
+    }
 }
