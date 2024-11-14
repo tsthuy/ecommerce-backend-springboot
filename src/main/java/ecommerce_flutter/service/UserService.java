@@ -2,8 +2,6 @@ package ecommerce_flutter.service;
 
 import ecommerce_flutter.dto.request.UserRequestDto;
 import ecommerce_flutter.dto.request.UserUpdateRequest;
-import ecommerce_flutter.dto.response.ApiResponse;
-import ecommerce_flutter.dto.response.ProductResponse;
 import ecommerce_flutter.dto.response.UserResponse;
 import ecommerce_flutter.exception.AppException;
 import ecommerce_flutter.exception.ErrorCode;
@@ -20,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,10 +43,18 @@ public class UserService {
         }
         return userMapper.toUserResponse(user);
     }
+
    public List<UserResponse> getUsers(){
        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
    }
-
+    public User login(String username, String password) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
+            return user.get(); // Đăng nhập thành công, trả về đối tượng User
+        } else {
+            return null; // Đăng nhập thất bại
+        }
+    }
    public UserResponse updateUser(String userId, UserUpdateRequest request){
        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
        userMapper.updateUser(user, request);

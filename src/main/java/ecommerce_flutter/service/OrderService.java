@@ -1,67 +1,42 @@
 package ecommerce_flutter.service;
 
-import ecommerce_flutter.dto.response.ResOrderDTO;
-import ecommerce_flutter.dto.response.UserResponse;
+import ecommerce_flutter.dto.response.OrderResponse;
 import ecommerce_flutter.mapper.OrderMapper;
-import ecommerce_flutter.mapper.UserMapper;
 import ecommerce_flutter.model.Order;
-import ecommerce_flutter.model.User;
 import ecommerce_flutter.repository.OrderRepository;
-import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
-public class OrderService {
-    private final OrderRepository orderRepository;
-    private final UserService userService;
-    private final UserMapper userMapper;
-    private final OrderMapper orderMapper;
-
-    public Order getOrderById(String id) {
-        return orderRepository.findById(id).orElse(null);
+@Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public  class OrderService {
+    OrderMapper orderMapper;
+    OrderRepository orderRepository;
+    public List<OrderResponse> getOders(){
+       List<Order> orders = orderRepository.findAll();
+       return orders.stream().map(orderMapper::toOrderResponse).toList();
     }
-
-    @Transactional
-    public Order createOrder(Order order) {
-        System.out.println(order);
-        UserResponse resDbUser = userService.getUserById(order.getUser().getId());
-        User dbUser = new User();
-        dbUser.setId(resDbUser.getId());
-        dbUser.setUsername(resDbUser.getUsername());
-        dbUser.setRole("user");
-
-        Order newOrder = new Order();
-        newOrder.setUser(dbUser);
-        return orderRepository.save(order);
+   public List<OrderResponse> getOrderById(String userId){
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream().map(orderMapper::toOrderResponse).toList();
     }
+    public OrderResponse updateOrderStatus(String orderId, String status) {
+        Optional<Order> orderOpt = orderRepository.findById(orderId);
 
-    public List<ResOrderDTO> getAllOrderByAdmin() {
-        List<Order> orders = orderRepository.findAll();
-
-        return orders.stream()
-                .map(orderMapper::mapToResOrderDTO)
-                .collect(Collectors.toList());
-    }
-
-    public Order updateOrder(Order orderUpdate, String id) {
-        Order orderDb = getOrderById(id);
-
-        orderDb.setStatus(orderUpdate.getStatus());
-        return orderRepository.save(orderDb);
-    }
-
-    public List<ResOrderDTO> getAllOrderByUser(String id) {
-        List<Order> orders = orderRepository.findAllByUserId(id);
-
-        return orders.stream()
-                .map(orderMapper::mapToResOrderDTO)
-                .collect(Collectors.toList());
+        if (orderOpt.isPresent()) {
+            Order order = orderOpt.get();
+            order.setStatus(status);
+            return orderMapper.toOrderResponse(orderRepository.save(order));  // Lưu thay đổi vào DB
+            // Trả về OrderResponse đã cập nhật
+        } else {
+            throw new RuntimeException("Order not found with ID: " + orderId);
+        }
     }
 }

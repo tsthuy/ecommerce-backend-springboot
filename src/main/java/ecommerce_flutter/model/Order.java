@@ -3,8 +3,9 @@ package ecommerce_flutter.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Value;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,19 +15,17 @@ import java.util.List;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Order
-{
+public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @Column(nullable = false)
-    Boolean status = false; // true: completed, false: pending
+    String userId;
+    LocalDateTime orderDate;
+    String status;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
-
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    List<OrderItem> orderItems;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_id")  // This specifies the foreign key in the Item table
+    private List<Item> items = new ArrayList<>();
 }

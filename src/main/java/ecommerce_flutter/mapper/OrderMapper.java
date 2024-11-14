@@ -1,27 +1,17 @@
 package ecommerce_flutter.mapper;
 
-import ecommerce_flutter.dto.response.ResOrderDTO;
+import ecommerce_flutter.dto.response.OrderResponse;
+import ecommerce_flutter.model.Item;
 import ecommerce_flutter.model.Order;
-import ecommerce_flutter.model.OrderItem;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Component
-public class OrderMapper {
-    public ResOrderDTO mapToResOrderDTO(Order order) {
-        if (order == null) {
-            return null;
-        }
-
-        return ResOrderDTO.builder()
-                .id(order.getId())
-                .status(order.getStatus())
-                .user(order.getUser())
-                .orderItems(order.getOrderItems())
-                .build();
-    }
-
+@Mapper(componentModel = "spring")
+public interface OrderMapper {
+    @Mapping(source = "id", target = "orderId")
+    @Mapping(source = "userId", target = "userId")
+    @Mapping(source = "orderDate", target = "orderDate")
+    @Mapping(source = "status", target = "status")
+    OrderResponse toOrderResponse(Order order);
+    OrderResponse.ItemResponse toItemResponse(Item item);
 }

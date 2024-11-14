@@ -21,6 +21,7 @@ default ProductResponse toProductResponse(Product product) {
     response.setPrice(product.getPrice());
     response.setCategory(product.getCategory());
     response.setRate(product.getRate());
+    response.setDeleted(product.getDeleted());
     return response;
 }
     void updateProduct(@MappingTarget Product product, ProductUpdateRequest request);

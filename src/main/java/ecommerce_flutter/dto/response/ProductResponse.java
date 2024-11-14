@@ -20,5 +20,6 @@ public class ProductResponse {
     double price;
     String category;
     double rate;
+    Boolean deleted;
 
 }

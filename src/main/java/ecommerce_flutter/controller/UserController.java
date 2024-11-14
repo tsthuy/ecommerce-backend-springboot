@@ -6,14 +6,18 @@ import ecommerce_flutter.dto.response.ApiResponse;
 import ecommerce_flutter.dto.response.UserResponse;
 import ecommerce_flutter.model.User;
 import ecommerce_flutter.service.UserService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -23,20 +27,20 @@ import java.util.List;
 public class UserController {
     UserService userService;
 
-    @PostMapping("/")
-    ApiResponse<UserResponse> createUser(@RequestBody @Valid UserRequestDto userRequestDto){
+    @PostMapping("/register")
+    ApiResponse<UserResponse> createUser(@RequestBody UserRequestDto userRequestDto){
+        log.info(userRequestDto.getUsername(), userRequestDto.getPassword());
         return ApiResponse.<UserResponse>builder().result(userService.createUser(userRequestDto))
                 .build();
     }
-
+    @PostMapping("/login")
+    public ApiResponse<User> login(@RequestBody UserRequestDto loginRequest) {
+        log.info(loginRequest.getUsername(), loginRequest.getPassword());
+        return ApiResponse.<User>builder().result(userService.login(loginRequest.getUsername(), loginRequest.getPassword())).build();
+    }
     @GetMapping
     ApiResponse<List<UserResponse>> getUers(){
         return ApiResponse.<List<UserResponse>>builder().result(userService.getUsers()).build();
-    }
-
-    @PostMapping("/username")
-    ApiResponse<UserResponse> getUserByUsername(@RequestBody String username){
-        return ApiResponse.<UserResponse>builder().result(userService.getUserByUsername(username)).build();
     }
 
     @PutMapping("/{userId}")

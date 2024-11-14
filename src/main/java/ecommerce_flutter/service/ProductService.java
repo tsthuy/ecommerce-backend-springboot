@@ -41,7 +41,7 @@ public class ProductService {
     }
 
     public List<ProductResponse> getProducts() {
-        return productRepository.findAll().stream().map(productMapper::toProductResponse).toList();
+        return productRepository.findAllNotDeleted().stream().map(productMapper::toProductResponse).toList();
     }
 
     public ProductResponse getProductById(String id) {
