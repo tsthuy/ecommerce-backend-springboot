@@ -29,17 +29,18 @@ public class UserController {
 
     @PostMapping("/register")
     ApiResponse<UserResponse> createUser(@RequestBody UserRequestDto userRequestDto){
-        log.info(userRequestDto.getUsername(), userRequestDto.getPassword());
+//        log.info(userRequestDto.getUsername(), userRequestDto.getPassword());
         return ApiResponse.<UserResponse>builder().result(userService.createUser(userRequestDto))
                 .build();
     }
+
     @PostMapping("/login")
-    public ApiResponse<User> login(@RequestBody UserRequestDto loginRequest) {
-        log.info(loginRequest.getUsername(), loginRequest.getPassword());
-        return ApiResponse.<User>builder().result(userService.login(loginRequest.getUsername(), loginRequest.getPassword())).build();
+    public ApiResponse<UserResponse> login(@RequestBody UserRequestDto loginRequest) {
+//        log.info(loginRequest.getUsername(), loginRequest.getPassword());
+        return ApiResponse.<UserResponse>builder().result(userService.login(loginRequest.getUsername(), loginRequest.getPassword())).build();
     }
     @GetMapping
-    ApiResponse<List<UserResponse>> getUers(){
+    ApiResponse<List<UserResponse>> getUsers(){
         return ApiResponse.<List<UserResponse>>builder().result(userService.getUsers()).build();
     }
 

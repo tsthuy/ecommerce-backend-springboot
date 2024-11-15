@@ -47,14 +47,16 @@ public class UserService {
    public List<UserResponse> getUsers(){
        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
    }
-    public User login(String username, String password) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return user.get(); // Đăng nhập thành công, trả về đối tượng User
+
+    public UserResponse login(String username, String password) {
+        User user = userRepository.findByUsername(username).orElse(null);
+    if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return userMapper.toUserResponse(user); // Đăng nhập thành công, trả về đối tượng User
         } else {
             return null; // Đăng nhập thất bại
         }
     }
+
    public UserResponse updateUser(String userId, UserUpdateRequest request){
        User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
        userMapper.updateUser(user, request);
@@ -74,5 +76,9 @@ public class UserService {
     public UserResponse getUserByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return userMapper.toUserResponse(user);
+    }
+
+    public UserResponse register(UserRequestDto userRequestDto) {
+        return createUser(userRequestDto);
     }
 }

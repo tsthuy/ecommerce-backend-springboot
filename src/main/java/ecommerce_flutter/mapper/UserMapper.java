@@ -10,6 +10,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     User toUser(UserRequestDto requestDto);
+
     default UserResponse toUserResponse(User user){
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
